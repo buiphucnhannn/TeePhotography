@@ -1,0 +1,278 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Design tokens — class Tailwind: bg-paper, text-ink, text-amber, font-serif…
+   Cảm hứng: Pixieset (trắng, thoáng, ảnh lớn) + chấm cam trong logo Tee.
+------------------------------------------------------------------- */
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif), Georgia, "Times New Roman", serif;
+
+  /* nền giấy ấm */
+  --color-paper: #faf8f4;
+  --color-paper-50: #ffffff;
+  --color-paper-100: #f3efe8;
+  --color-paper-200: #e9e3d9;
+
+  /* xám tro (viền, chữ phụ) */
+  --color-ash-300: #cfc8bd;
+  --color-ash-400: #a79f93;
+  --color-ash-500: #7d766c;
+
+  /* mực */
+  --color-ink: #1a1816;
+  --color-ink-soft: #4f4a44;
+  --color-ink-muted: #8c857c;
+  --color-graphite: #262321;
+
+  /* điểm nhấn: cam hổ phách của logo, dùng tiết chế */
+  --color-amber: #d9924a;
+  --color-amber-light: #f1d7bb;
+
+  --shadow-soft: 0 24px 60px -24px rgb(26 24 22 / 0.22);
+  --shadow-card: 0 10px 30px -12px rgb(26 24 22 / 0.16);
+  --shadow-polaroid: 0 18px 40px -18px rgb(26 24 22 / 0.35);
+
+  --tracking-eyebrow: 0.28em;
+
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --animate-marquee: marquee 60s linear infinite;
+  --animate-float: float 5s ease-in-out infinite;
+  --animate-kenburns: kenburns 9s ease-out forwards;
+  --animate-ripple: ripple 3s ease-out infinite;
+  --animate-hero-in: hero-in 1.8s var(--ease-out-expo) both;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes kenburns {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.08);
+    }
+  }
+  @keyframes ripple {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      transform: scale(1.06);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes popIn {
+    from {
+      opacity: 0;
+      transform: translateY(24px) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes loadbar {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+
+/* "Một màn hình" = chiều cao viewport, tối đa 1080px */
+html {
+  -webkit-text-size-adjust: 100%;
+  --screen: min(100svh, 1080px);
+}
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip; /* clip thay vì hidden để sticky vẫn chạy */
+}
+
+@layer base {
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+  }
+  ::selection {
+    background: var(--color-amber-light);
+    color: var(--color-ink);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  figcaption {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  blockquote,
+  dd {
+    text-wrap: pretty;
+  }
+  /* số kiểu old-style của Cormorant trông như lỗi font */
+  .font-serif {
+    font-variant-numeric: lining-nums;
+  }
+  /* Mọi thứ bấm được đều hiện bàn tay (trình duyệt mặc định để <button> là mũi tên) */
+  a[href],
+  button:not(:disabled),
+  summary,
+  [role="button"],
+  [role="tab"],
+  [data-booking],
+  label[for],
+  select {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Scrollbar mảnh */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ash-300);
+  border-radius: 10px;
+  border: 2px solid var(--color-paper);
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+
+/* ---------- utilities ---------- */
+@utility eyebrow {
+  @apply text-[11px] font-medium tracking-eyebrow text-amber uppercase;
+}
+@utility h-display {
+  @apply font-serif leading-[1.04] font-medium tracking-[-0.01em];
+}
+@utility field {
+  @apply w-full rounded-xl border border-ink/10 bg-white px-4 py-3 text-sm text-ink transition outline-none placeholder:text-ink-muted focus:border-ink/40 focus:ring-2 focus:ring-ink/10;
+}
+@utility polaroid {
+  @apply bg-white p-2 pb-7 shadow-polaroid;
+}
+@utility screen {
+  @media (min-width: 1024px) {
+    min-height: var(--screen);
+  }
+}
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+@utility text-legible {
+  text-shadow:
+    0 1px 2px rgb(0 0 0 / 0.55),
+    0 2px 12px rgb(0 0 0 / 0.45);
+}
+@utility text-legible-lg {
+  text-shadow:
+    0 1px 1px rgb(0 0 0 / 0.35),
+    0 2px 6px rgb(0 0 0 / 0.3),
+    0 8px 40px rgb(0 0 0 / 0.55);
+}
+
+/* ---------- scroll reveal (trạng thái ẩn ban đầu; animation chạy bằng WAAPI trong useReveal) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  filter: blur(6px);
+  will-change: opacity, transform, filter;
+}
+.reveal[data-reveal="left"] {
+  transform: translateX(-32px);
+}
+.reveal[data-reveal="right"] {
+  transform: translateX(32px);
+}
+.reveal[data-reveal="scale"] {
+  transform: scale(0.94);
+}
+.reveal[data-reveal="clip"] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  clip-path: inset(12% 6% 12% 6% round 2rem);
+}
+.split .split-unit {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(0.35em);
+}
+/* JS tắt → vẫn thấy nội dung */
+html.no-js .reveal,
+html.no-js .split .split-unit {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  clip-path: none;
+}
+
+/* ---------- marquee ---------- */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 70s) linear infinite;
+}
+.marquee-track.reverse {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
